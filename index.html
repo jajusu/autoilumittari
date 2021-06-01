@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+    body{
+        width: auto;
+        max-width: 400px;
+        margin:auto;
+        padding-top: 20px;
+        padding-bottom: 3px;
+        background-image: url('manta.jpg');
+        background-color: #aa8b8b;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        font-family: 'Roboto', sans-serif;
+    }
+    .inputlabel{
+        width:90px;
+        display: inline-block;
+    }
+    .vihrea{
+        color:green;
+    }
+    #kontti{
+        border: 1px;
+        border-style: solid;
+        padding: 2px;
+        padding-top: 3px;
+        padding-bottom: 10px;
+        background-color: #fff;
+    }
+    .punainen, #matkavirhe, #nopeus1virhe, #nopeus2virhe{
+        color:red;
+    }
+    #ylaosa{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    #lomake{
+        flex: 90%;
+    }
+    #tyhja{
+        flex: 5%;
+    }
+    #nopeus1tulos, #nopeus2tulos, #vertailuntulos, #valittuauto, #matkanpituus{
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    #nappi {
+        display: block;
+        width: 100%;
+        border: none;
+        background-color: #04AA6D;
+        color: white;
+        padding: 14px 28px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
+    #nappi:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    form, input{
+    }
+</style>
+<title>Autoilumittari</title>
+<!-- 
+Kesälomat lähestyvät ja monien katseet kääntyvät kohti kesämökkejä. Osalla nämä löytyvät lähempää, 
+osalla taas matkustukseen kuluu pitkiäkin aikoja. Monesti tien päällä ollessa tuntuu siltä, 
+että jos hieman vielä kiihdyttäisi, olisi perillä merkittävästi nopeammin… 
+vai olisiko sittenkään? Ovatko voitetut minuutit kasvaneiden matkakustannusten arvoisia? 
+Entä kuinka paljon matkustusajoneuvon tyyppi vaikuttaa tähän?
+
+Tehtävänäsi on toteuttaa autoilumittari-sovellus. Sovelluksen tulee pystyä suorittamaan vertailu matka-ajan ja polttoaineen 
+kulutuksen välillä kahden eri valitun nopeuden mukaan: käyttäjä ilmoittaa saman matkustettavan etäisyyden 
+samalla kulkuneuvotyypillä eri nopeuksilla ja sovellus laskee miten paljon nopeammin käyttäjä on perillä ja 
+kuinka paljon enemmän polttoainetta tähän kuluu. Etäisyyden sekä kulkuneuvotyypin tulee siis olla molemmissa samat. 
+Sovelluksen tulee pystyä näyttämään web-käyttöliittymässä molemmista annetuista matkanopeuksista käytetty aika ja polttoaine, 
+sekä näiden kahden ero.
+
+Sovelluksessa tulee pystyä tarkastelemaan kolmen erilaisen auton tuloksia. 
+Autojen bensankulutus kasvaa 1.009 kulmakertoimella. Eli jos auton nopeus kasvaa 1km/h, 
+niin bensankulutus kasvaa 1.009 kertaiseksi. Eri autojen bensakulutus 1km/h nopeudella on seuraava:
+
+    Auto A: 3l / 100km
+    Auto B: 3.5l / 100km
+    Auto C: 4l / 100km
+
+Toteutuksessa käytettävät teknologiat ovat vapaasti päätettävissäsi. 
+Tehtävässä ei välttämättä ole tarpeen tehdä erillistä backend-toteutusta, 
+mutta voit sen halutessasi tehdä. 
+Tehtävässä ei saa käyttää mitään kolmannen osapuolen palvelua tai kirjastoa, mikä toteuttaa vaaditut vertailutoimenpiteet.
+
+Katso vielä lisätiedot tehtävän arviointikriteereistä sekä tarkempi ohje siitä, mitä palautuksessa tulee huomioida.
+
+Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
+ -->
+<body>
+    <div id="kontti">
+        <!-- Käyttäjän syötteet talteen. -->
+        <div id="ylaosa">
+            <div id="tyhja"></div>
+            <div id="lomake">
+                <h1 id="otsikko">AUTOILUMITTARI</h1>
+                <form>
+                    Valitse auto:<br>
+                    <input type="radio" id="autoa" name="autot" value="Auto A" checked=true>
+                    <label for="autoa">Auto A: kulutus 3l</label><br>
+                    <input type="radio" id="autob" name="autot" value="Auto B">
+                    <label for="autob">Auto B: kulutus 3.5l</label><br>
+                    <input type="radio" id="autoc" name="autot" value="Auto C">
+                    <label for="autoc">Auto C: kulutus 4l</label>
+                    <p>
+                        <label class="inputlabel">Matka:</label> 
+                        <input type="text" id="matka" size="2"> km
+                        <div id="matkavirhe"></div>
+                    </p>
+                    <p>
+                        <label class="inputlabel">Nopeus 1:</label> 
+                        <input type="text" id="nopeus1" size="2"> km/h
+                        <div id="nopeus1virhe"></div>
+                    </p>
+                    <p>
+                        <label class="inputlabel">Nopeus 2:</label> 
+                        <input type="text" id="nopeus2" size="2"> km/h
+                        <div id="nopeus2virhe"></div>
+                    </p>
+                    <input type="button" id="nappi" value="Laske" onclick="validoi()"> <!-- Ensin validointi -->
+                </form>
+                <!-- Tänne tulostukset -->
+                <br>
+                <div id="valittuauto"></div>
+                <div id="matkanpituus"></div>
+                <br>
+                <div id="nopeus1tulos"></div>
+                <br>
+                <div id="nopeus2tulos"></div>
+                <br>
+                <div id="vertailuntulos"></div>
+            </div>
+                <div id="tyhja"></div>
+        </div>
+    </div>
+	<script type="text/javascript">
+		function laske() {
+            var alkukulutus=0; 
+            var matka=document.getElementById("matka").value/100 //jaetaan sadalla, jotta saadaan oikea kulutus myöhemmin
+            var nopeus1=document.getElementById("nopeus1").value //nopeus 1
+            var nopeus2=document.getElementById("nopeus2").value //nopeus 2
+            var auto=document.querySelector('input[name="autot"]:checked').value; //mikä auto valittu
+
+            var autonKulutus=laskeAutonKulutus(auto); //kulutus valitun auton mukaan
+            var nopeus1kulutus=laskeAlkukulutus(autonKulutus, matka); //alkukulutus, eli ajettu 1 kilometri
+            var nopeus2kulutus=laskeAlkukulutus(autonKulutus, matka); //alkukulutus, eli ajettu 1 kilometri
+            
+            nopeus1kulutus=laskeKulutus(nopeus1, nopeus1kulutus); //kulutuksen laskeminen alkukulutuksen ja nopeuden mukaan, alkaa kierrokselta 1
+            nopeus2kulutus=laskeKulutus(nopeus2, nopeus2kulutus); //kulutuksen laskeminen alkukulutuksen ja nopeuden mukaan, alkaa kierrokselta 1
+
+            var nopeus1aika=laskeMinuutit(matka, nopeus1); //lasketaan matkan aika minuutteina
+            var nopeus2aika=laskeMinuutit(matka, nopeus2); //lasketaan matkan aika minuutteina
+
+            //lokitetaan muuttujat
+            console.log("Kulutus: "+autonKulutus+" matka: "+matka+" nopeus1: "+ nopeus1+" nopeus2: "+nopeus2+" auto "+auto);
+            //tulostukset
+            var matkatulostus=matka*100;
+
+            document.getElementById("valittuauto").innerHTML="Valittu: "+auto;
+            document.getElementById("matkanpituus").innerHTML="Valittu matkan pituus: "+matkatulostus.toFixed(0)+" km";
+			document.getElementById("nopeus1tulos").innerHTML = tulostus(nopeus1, nopeus1aika, nopeus1kulutus);
+			document.getElementById("nopeus2tulos").innerHTML = tulostus(nopeus2, nopeus2aika, nopeus2kulutus);
+            document.getElementById("vertailuntulos").innerHTML = vertailu(nopeus1, nopeus2, nopeus1aika, nopeus2aika, nopeus1kulutus, nopeus2kulutus);
+		}
+        function laskeAutonKulutus(auto){//kulutus valitun auton mukaan
+            if (auto=="Auto A"){ 
+                return 3;
+            }else if (auto=="Auto B"){
+                return 3.5;
+            }else if (auto=="Auto C"){
+                return 4;
+            }
+        }
+        function laskeAlkukulutus(kulutus, matka){//alkukulutus, eli ajettu 1 kilometri
+            return kulutus*matka; 
+        }
+        function laskeKulutus(nopeus, kulutus){
+            for (var i=1;i<nopeus;i++){ //kulutuksen laskeminen alkukulutuksen ja nopeuden mukaan, alkaa kierrokselta 1
+                kulutus=kulutus*1.009;
+            }
+            return kulutus.toFixed(2);
+        }
+        function laskeMinuutit(matka, nopeus){
+            return aikaMinuutteina=matka*100/nopeus*60; //lasketaan matkan aika. kilometrit pitää kertoa sadalla, koska aiemmin jaettiin
+        }
+        function muotoileAika(aikaMinuutteina){ //muotoillaan aika tunneiksi ja minuuteiksi
+            var tunnit = aikaMinuutteina / 60;
+            var tasatunnit = Math.floor(tunnit);
+            var minuutit = (tunnit - tasatunnit) * 60;
+            var tasaminuutit = Math.round(minuutit);
+            if (tasatunnit<1){ //jossitellaan tulostusta: voi vaihtaa tilalle "minuuttia" tai "tuntia"
+                return tasaminuutit + " min"
+            }else if (tasaminuutit==0){
+                if (tasatunnit==1){
+                    return tasatunnit + " h";
+                }
+                return tasatunnit + " h";
+            }else if (tasatunnit==1){
+                return tasatunnit + " h ja " + tasaminuutit + " min";
+                }
+            return tasatunnit + " h ja " + tasaminuutit + " min";
+        }
+        function tulostus(nopeus, aika, kulutus){ //tulostetaan nopeus, aika ja kulutus
+			return "Nopeudella "+nopeus+" km/h: </br>-kulutus on "+kulutus+" litraa </br>-matkan kesto "+muotoileAika(aika);
+        }
+        function vertailu(nopeus1, nopeus2, aika1, aika2, kulutus1, kulutus2){ //kumpi on nopeampi ja kuinka paljon kuluu bensaa
+            var aika=0;
+            var kulutus=0;
+            nopeus1=parseInt(nopeus1);
+            nopeus2=parseInt(nopeus2);
+            if(nopeus1>nopeus2){
+                aika=aika2-aika1;
+                kulutus=kulutus1-kulutus2;
+                return "<b>Nopeudella "+nopeus1+" km/h:</b></br><span class='vihrea'>-olet perillä "+muotoileAika(aika)+" aiemmin <span class='punainen'></br>-bensaa kuluu "+kulutus.toFixed(2)+" litraa enemmän</span>"
+            }else if(nopeus2>nopeus1){
+                aika=aika1-aika2;
+                kulutus=kulutus2-kulutus1;
+                return "<b>Nopeudella "+nopeus2+" km/h</b></br><span class='vihrea'>-olet perillä "+muotoileAika(aika)+" aiemmin, <span class='punainen'></br>-bensaa kuluu "+kulutus.toFixed(2)+" litraa enemmän</span>"
+            }else if(nopeus1==nopeus2){
+                return "Nopeudet ovat samat. Olet perillä yhtä nopeasti!"
+            }
+        }
+        function validoi() { //validoidaan syötteitä
+            var viestiMatka="";
+            var viestiNopeus1="";
+            var viestiNopeus2="";
+            var matka = document.getElementById("matka").value;
+            var nopeus1 = document.getElementById("nopeus1").value;
+            var nopeus2 = document.getElementById("nopeus2").value;
+            //jos syötetään muuta kuin numero tai pienempi kuin 1, niin näytetään virhe
+            if (isNaN(matka) || matka<1 || matka=="") {
+                viestiMatka = "Syötä positiivinen kokonaisluku";
+                tyhjenna();
+            }else if (isNaN(nopeus1) || nopeus1<1 || nopeus1=="") {
+                viestiNopeus1 = "Syötä positiivinen kokonaisluku";
+                tyhjenna();
+            }else if (isNaN(nopeus2) || nopeus2<1 || nopeus2=="") {
+                viestiNopeus2 = "Syötä positiivinen kokonaisluku";
+                tyhjenna();
+            }else{
+                document.getElementById("matkavirhe").innerHTML = "";
+                document.getElementById("nopeus1virhe").innerHTML = "";
+                document.getElementById("nopeus2virhe").innerHTML = "";
+                laske(); //jos validointi onnistuu, lasketaan arvot
+            }
+            document.getElementById("matkavirhe").innerHTML = viestiMatka;
+            document.getElementById("nopeus1virhe").innerHTML = viestiNopeus1;
+            document.getElementById("nopeus2virhe").innerHTML = viestiNopeus2;
+        }
+        function tyhjenna(){ //tyhjennetään tulokset, jos yritetään syöttää virheellisiä arvoja
+            document.getElementById("valittuauto").innerHTML="";
+            document.getElementById("matkanpituus").innerHTML="";
+			document.getElementById("nopeus1tulos").innerHTML = "";
+			document.getElementById("nopeus2tulos").innerHTML = "";
+            document.getElementById("vertailuntulos").innerHTML = "";
+        }
+    </script>
+</body>
+</html>
