@@ -29,7 +29,7 @@
         border-style: solid;
         padding: 2px;
         padding-top: 3px;
-        padding-bottom: 10px;
+        padding-bottom: 3px;
         background-color: #fff;
     }
     .punainen, #matkavirhe, #nopeus1virhe, #nopeus2virhe{
@@ -135,11 +135,8 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
                 <br>
                 <div id="valittuauto"></div>
                 <div id="matkanpituus"></div>
-                <br>
                 <div id="nopeus1tulos"></div>
-                <br>
                 <div id="nopeus2tulos"></div>
-                <br>
                 <div id="vertailuntulos"></div>
             </div>
                 <div id="tyhja"></div>
@@ -169,7 +166,7 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
             var matkatulostus=matka*100;
 
             document.getElementById("valittuauto").innerHTML="Valittu: "+auto;
-            document.getElementById("matkanpituus").innerHTML="Valittu matkan pituus: "+matkatulostus.toFixed(0)+" km";
+            document.getElementById("matkanpituus").innerHTML="Valittu matkan pituus: "+matkatulostus.toFixed(0)+" km</br></br>";
 			document.getElementById("nopeus1tulos").innerHTML = tulostus(nopeus1, nopeus1aika, nopeus1kulutus);
 			document.getElementById("nopeus2tulos").innerHTML = tulostus(nopeus2, nopeus2aika, nopeus2kulutus);
             document.getElementById("vertailuntulos").innerHTML = vertailu(nopeus1, nopeus2, nopeus1aika, nopeus2aika, nopeus1kulutus, nopeus2kulutus);
@@ -213,7 +210,7 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
             return tasatunnit + " h ja " + tasaminuutit + " min";
         }
         function tulostus(nopeus, aika, kulutus){ //tulostetaan nopeus, aika ja kulutus
-			return "Nopeudella "+nopeus+" km/h: </br>-kulutus on "+kulutus+" litraa </br>-matkan kesto "+muotoileAika(aika);
+			return "Nopeudella "+nopeus+" km/h: </br>-kulutus on "+kulutus+" litraa </br>-matkan kesto "+muotoileAika(aika)+"</br></br>";
         }
         function vertailu(nopeus1, nopeus2, aika1, aika2, kulutus1, kulutus2){ //kumpi on nopeampi ja kuinka paljon kuluu bensaa
             var aika=0;
@@ -223,13 +220,13 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
             if(nopeus1>nopeus2){
                 aika=aika2-aika1;
                 kulutus=kulutus1-kulutus2;
-                return "<b>Nopeudella "+nopeus1+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span>"
+                return "<b>Nopeudella "+nopeus1+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span></br></br>"
             }else if(nopeus2>nopeus1){
                 aika=aika1-aika2;
                 kulutus=kulutus2-kulutus1;
-                return "<b>Nopeudella "+nopeus2+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span>"
+                return "<b>Nopeudella "+nopeus2+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span></br></br>"
             }else if(nopeus1==nopeus2){
-                return "Nopeudet ovat samat. Olet perillä yhtä nopeasti!"
+                return "<span class='vihrea'>Nopeudet ovat samat. Olet perillä yhtä nopeasti!</br></br>"
             }
         }
         function validoi() { //validoidaan syötteitä
