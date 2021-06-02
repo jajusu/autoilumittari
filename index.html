@@ -109,11 +109,11 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
                 <form>
                     Valitse auto:<br>
                     <input type="radio" id="autoa" name="autot" value="Auto A" checked=true>
-                    <label for="autoa">Auto A: kulutus 3l</label><br>
+                    <label for="autoa">Auto A: kulutus 3 l</label><br>
                     <input type="radio" id="autob" name="autot" value="Auto B">
-                    <label for="autob">Auto B: kulutus 3.5l</label><br>
+                    <label for="autob">Auto B: kulutus 3.5 l</label><br>
                     <input type="radio" id="autoc" name="autot" value="Auto C">
-                    <label for="autoc">Auto C: kulutus 4l</label>
+                    <label for="autoc">Auto C: kulutus 4 l</label>
                     <p>
                         <label class="inputlabel">Matka:</label> 
                         <input type="text" id="matka" size="2"> km
@@ -223,11 +223,11 @@ Onnea koodihaasteeseen ja mukavaa (kesä)koodailua!
             if(nopeus1>nopeus2){
                 aika=aika2-aika1;
                 kulutus=kulutus1-kulutus2;
-                return "<b>Nopeudella "+nopeus1+" km/h:</b></br><span class='vihrea'>-olet perillä "+muotoileAika(aika)+" aiemmin <span class='punainen'></br>-bensaa kuluu "+kulutus.toFixed(2)+" litraa enemmän</span>"
+                return "<b>Nopeudella "+nopeus1+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span>"
             }else if(nopeus2>nopeus1){
                 aika=aika1-aika2;
                 kulutus=kulutus2-kulutus1;
-                return "<b>Nopeudella "+nopeus2+" km/h:</b></br><span class='vihrea'>-olet perillä "+muotoileAika(aika)+" aiemmin <span class='punainen'></br>-bensaa kuluu "+kulutus.toFixed(2)+" litraa enemmän</span>"
+                return "<b>Nopeudella "+nopeus2+" km/h:</b></br><span class='vihrea'>-perillä "+muotoileAika(aika)+" aiemmin<span class='punainen'></br>-kulutus "+kulutus.toFixed(2)+" l enemmän</span>"
             }else if(nopeus1==nopeus2){
                 return "Nopeudet ovat samat. Olet perillä yhtä nopeasti!"
             }
